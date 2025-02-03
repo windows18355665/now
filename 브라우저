@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>브라우저</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .ad-banner {
+            margin-top: 20px;
+        }
+        .weather {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h2>검색하기</h2>
+    <input type="text" id="searchBox" placeholder="검색어 입력">
+    <button onclick="search()">검색</button>
+
+    <div class="ad-banner">
+        <a href="https://www.example.com" target="_blank">
+            <img src="https://via.placeholder.com/728x90.png?text=광고+배너" alt="광고 배너">
+        </a>
+    </div>
+
+    <div class="weather">
+        <h3>현재 날씨</h3>
+        <p id="weather-info">날씨 정보를 불러오는 중...</p>
+    </div>
+
+    <script>
+        function search() {
+            let query = document.getElementById("searchBox").value;
+            if (query) {
+                window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(query);
+            }
+        }
+
+        // 날씨 정보 가져오기 (OpenWeather API 사용)
+        async function getWeather() {
+            const apiKey = "YOUR_OPENWEATHER_API_KEY"; // rows-449802
+            const city = "Seoul"; // 원하는 도시 변경 가능
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=kr`;
+
+            try {
+                let response = await fetch(url);
+                let data = await response.json();
+                document.getElementById("weather-info").innerText =
+                    `${data.name}: ${data.main.temp}°C, ${data.weather[0].description}`;
+            } catch (error) {
+                document.getElementById("weather-info").innerText = "날씨 정보가 없습니다.";
+            }
+        }
+
+        getWeather();
+    </script>
+</body>
+</html>
+
+
